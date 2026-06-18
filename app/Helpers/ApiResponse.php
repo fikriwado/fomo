@@ -3,11 +3,30 @@
 namespace App\Helpers;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ApiResponse
 {
     public static function success(mixed $data = null, string $message = 'Request successful.', int $status = 200): JsonResponse
     {
+        if ($data instanceof LengthAwarePaginator) {
+            return response()->json([
+                'status' => 'success',
+                'message' => $message,
+                'data' => $data->items(),
+                'pagination' => [
+                    'next_page' => $data->nextPageUrl() ? (string) ($data->currentPage() + 1) : null,
+                    'prev_page' => $data->previousPageUrl() ? (string) ($data->currentPage() - 1) : null,
+                    'current_page' => $data->currentPage(),
+                    'last_page' => $data->lastPage(),
+                    'per_page' => $data->perPage(),
+                    'to' => $data->lastItem(),
+                    'from' => $data->firstItem(),
+                    'total' => $data->total(),
+                ],
+            ], $status);
+        }
+
         return response()->json([
             'status' => 'success',
             'message' => $message,
