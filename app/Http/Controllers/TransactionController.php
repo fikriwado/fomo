@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\TransactionService;
+use App\Http\Requests\TransactionRequest;
 use App\Http\Resources\TransactionResource;
 
 class TransactionController extends Controller
@@ -22,15 +22,9 @@ class TransactionController extends Controller
         return $this->resSuccess($data);
     }
 
-    public function store(Request $request)
+    public function store(TransactionRequest $request)
     {
-        $validated = $request->validate([
-            'items' => ['required', 'array', 'min:1'],
-            'items.*.product_id' => ['required', 'integer', 'exists:products,id'],
-            'items.*.quantity' => ['required', 'integer', 'min:1'],
-        ]);
-
-        $data = $this->transactionService->store($validated);
+        $data = $this->transactionService->store($request->validated());
         $data = TransactionResource::make($data);
         return $this->resCreated($data);
     }

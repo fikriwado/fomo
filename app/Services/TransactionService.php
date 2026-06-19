@@ -20,7 +20,7 @@ class TransactionService
             $items = [];
             $totalAmount = 0;
 
-            foreach ($data['items'] as $item) {
+            foreach ($data['items'] as $index => $item) {
                 $product = Product::query()
                     ->whereKey($item['product_id'])
                     ->lockForUpdate()
@@ -28,7 +28,9 @@ class TransactionService
 
                 if ($product->stock < $item['quantity']) {
                     throw ValidationException::withMessages([
-                        'items' => 'Product stock is not enough.',
+                        "items.$index.quantity" => [
+                            "Stock for {$product->name} is not enough.",
+                        ],
                     ]);
                 }
 
