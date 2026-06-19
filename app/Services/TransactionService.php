@@ -20,7 +20,18 @@ class TransactionService
             $items = [];
             $totalAmount = 0;
 
-            foreach ($data['items'] as $index => $item) {
+            $requestedItems = collect($data['items'])
+                ->groupBy('product_id')
+                ->map(function ($items, $productId) {
+                    return [
+                        'product_id' => (int) $productId,
+                        'quantity' => $items->sum('quantity'),
+                    ];
+                })
+                ->sortBy('product_id')
+                ->values();
+
+            foreach ($requestedItems as $index => $item) {
                 $product = Product::query()
                     ->whereKey($item['product_id'])
                     ->lockForUpdate()
