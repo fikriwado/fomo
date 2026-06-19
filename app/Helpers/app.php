@@ -13,11 +13,3 @@ if (! function_exists('collectPaginate')) {
         return $data;
     }
 }
-
-if (! function_exists('dataFrom')) {
-    function dataFrom($request, $model, $withData = [])
-    {
-        $columns = Schema::getColumnListing((new $model)->getTable());
-        return collect($request->all())->only($columns)->merge($withData)->toArray();
-    }
-}
