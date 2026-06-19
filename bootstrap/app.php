@@ -44,7 +44,7 @@ return Application::configure(basePath: dirname(__DIR__))
             }
 
             return match ($exception->getStatusCode()) {
-                404 => ApiResponse::notFound($exception->getMessage() ?: 'Not Found.'),
+                404 => ApiResponse::notFound(),
                 405 => ApiResponse::methodNotAllowed($exception->getMessage() ?: 'Method Not Allowed.'),
                 default => ApiResponse::error(
                     $exception->getMessage() ?: 'Request failed.',
