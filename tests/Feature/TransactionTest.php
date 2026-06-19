@@ -26,7 +26,10 @@ function purchaseProductProcess(Product $product): Process
         }
     PHP;
 
-    return new Process([PHP_BINARY, base_path('artisan'), 'tinker', '--execute', $script]);
+    $process = new Process([PHP_BINARY, base_path('artisan'), 'tinker', '--execute', $script]);
+    $process->setEnv(['APP_ENV' => 'testing']);
+
+    return $process;
 }
 
 test('make sure generating code', function () {

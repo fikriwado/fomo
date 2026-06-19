@@ -6,7 +6,7 @@ Project ini dibangun menggunakan Laravel dengan bahasa pemrograman **PHP**.
 
 Membuat API sederhana untuk transaksi barang dengan mempertimbangkan berebut stok, baik melalui flash sale atau lainnya. Masalah race condition tersebut akan ditangani dengan mengunci database atau di laravel bisa menggunakan `lockForUpdate()` yang sudah tersedia.
 
-## TODO API
+## Rest API
 
 - GET: http://localhost:8000/api/categories
 - GET: http://localhost:8000/api/categories/{id}
